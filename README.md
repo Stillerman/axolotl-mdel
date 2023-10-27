@@ -1,3 +1,17 @@
+# Bantam
+
+lora-out folder: https://huggingface.co/stillerman/axolotl-bantam-openllama3
+train with: `accelerate launch -m axolotl.cli.train examples/openllama-3b/lora.yml`
+inference with : `accelerate launch -m axolotl.cli.inference examples/openllama-3b/lora.yml \
+    --lora_model_dir="./lora-out"`
+
+runpod stats:
+```
+1 x RTX 4090
+16 vCPU 61 GB RAM
+winglian/axolotl-runpod:main-latest
+```
+
 # Axolotl
 
 Axolotl is a tool designed to streamline the fine-tuning of various AI models, offering support for multiple configurations and architectures.
