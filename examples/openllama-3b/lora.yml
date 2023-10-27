@@ -6,8 +6,9 @@ load_in_4bit: false
 strict: false
 push_dataset_to_hub:
 datasets:
-  - path: teknium/GPT4-LLM-Cleaned
-    type: alpaca
+  - path: stillerman/bantam-2016-11k
+    type: completion
+    field: prompt
 dataset_prepared_path:
 val_set_size: 0.02
 adapter: lora
@@ -26,15 +27,15 @@ lora_target_modules:
   - k_proj
   - o_proj
 lora_fan_in_fan_out:
-wandb_project:
-wandb_entity:
+wandb_project: openllama3b
+wandb_entity: stillerman
 wandb_watch:
 wandb_run_id:
 wandb_log_model:
 output_dir: ./lora-out
 gradient_accumulation_steps: 1
-micro_batch_size: 2
-num_epochs: 4
+micro_batch_size: 8
+num_epochs: 1
 optimizer: adamw_bnb_8bit
 torchdistx_path:
 lr_scheduler: cosine
@@ -61,6 +62,7 @@ deepspeed:
 weight_decay: 0.1
 fsdp:
 fsdp_config:
+max_steps: 150
 special_tokens:
   bos_token: "<s>"
   eos_token: "</s>"
