@@ -8,8 +8,10 @@ load_in_4bit: true
 strict: false
 
 datasets:
-  - path: mhenrichsen/alpaca_2k_test
-    type: alpaca
+  - path: stillerman/bantam-2016-11k
+    type: completion
+    field: prompt
+
 dataset_prepared_path:
 val_set_size: 0.01
 output_dir: ./qlora-out
@@ -28,8 +30,8 @@ lora_target_modules:
 lora_target_linear: true
 lora_fan_in_fan_out:
 
-wandb_project:
-wandb_entity:
+wandb_project: bantam-llama-7b
+wandb_entity: stillerman
 wandb_watch:
 wandb_run_id:
 wandb_log_model:
