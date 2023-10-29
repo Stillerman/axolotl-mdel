@@ -12,6 +12,24 @@ runpod stats:
 winglian/axolotl-runpod:main-latest
 ```
 
+# Training Bantam LLAMA
+- get RTX 4090 running `winglian/axolotl-runpod:main-latest`
+```
+git clone https://github.com/Stillerman/bantam-axolotl
+
+pip3 install packaging
+pip3 install -e '.[flash-attn,deepspeed]'
+pip3 install -U git+https://github.com/huggingface/peft.git
+
+wandb login
+huggingface-cli login
+
+accelerate launch -m axolotl.cli.train examples/llama-2/qlora.yml
+
+accelerate launch -m axolotl.cli.inference examples/llama-2/qlora.yml     --qlora_model_dir="./qlora-out"
+
+```
+
 # Axolotl
 
 Axolotl is a tool designed to streamline the fine-tuning of various AI models, offering support for multiple configurations and architectures.
