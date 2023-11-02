@@ -1,5 +1,6 @@
 """Prepare and train a model on a dataset. Can also infer from a model or merge lora"""
 
+from threading import Thread
 import importlib
 import logging
 import os
@@ -8,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 import gradio as gr
-
+import json
 import torch
 import yaml
 
@@ -17,7 +18,7 @@ from accelerate.commands.config import config_args
 from art import text2art
 from huggingface_hub import HfApi
 from huggingface_hub.utils import LocalTokenNotFoundError
-from transformers import GenerationConfig, TextStreamer
+from transformers import GenerationConfig, TextStreamer, TextIteratorStreamer
 
 from axolotl.common.cli import TrainerCliArgs, load_model_and_tokenizer
 from axolotl.logging_config import configure_logging
@@ -184,7 +185,6 @@ def do_inference_gradio(
     model = model.to(cfg.device)
 
     def greet(instruction):
-        instruction = get_multi_line_input()
         if not instruction:
             return
         if prompter_module:
@@ -198,6 +198,7 @@ def do_inference_gradio(
         print("=" * 40)
         model.eval()
         with torch.no_grad():
+            print("in there")
             generation_config = GenerationConfig(
                 repetition_penalty=1.1,
                 max_new_tokens=1024,
@@ -214,12 +215,25 @@ def do_inference_gradio(
                 output_hidden_states=False,
                 output_scores=False,
             )
-            generated = model.generate(
-                inputs=batch["input_ids"].to(cfg.device),
-                generation_config=generation_config,
-            )
+            streamer =TextIteratorStreamer(tokenizer)
+            print("mde streamer")
+            generation_kwargs = dict(inputs=batch["input_ids"].to(cfg.device), generation_config=generation_config, streamer=streamer)
+            thread = Thread(target=model.generate, kwargs=generation_kwargs)
+            thread.start()
 
-        return generated["sequences"].cpu().tolist()[0]
+            all_text = ""
+            for new_text in streamer:
+                all_text += new_text
+                yield all_text
+                
+            #generated = model.generate(
+            #    inputs=batch["input_ids"].to(cfg.device),
+            #    generation_config=generation_config,
+            #    streamer=streamer
+            #)
+            #print("generated", generated)
+
+        #return "tada" + tokenizer.decode(generated["sequences"].cpu().tolist()[0])
 
     demo = gr.Interface(fn=greet, inputs="text", outputs="text")
         
