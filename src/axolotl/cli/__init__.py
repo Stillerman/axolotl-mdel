@@ -195,10 +195,8 @@ def do_inference_gradio(
             prompt = instruction.strip()
         batch = tokenizer(prompt, return_tensors="pt", add_special_tokens=True)
 
-        print("=" * 40)
         model.eval()
         with torch.no_grad():
-            print("in there")
             generation_config = GenerationConfig(
                 repetition_penalty=1.1,
                 max_new_tokens=1024,
@@ -215,9 +213,9 @@ def do_inference_gradio(
                 output_hidden_states=False,
                 output_scores=False,
             )
-            streamer =TextIteratorStreamer(tokenizer)
-            print("mde streamer")
+            streamer = TextIteratorStreamer(tokenizer)
             generation_kwargs = dict(inputs=batch["input_ids"].to(cfg.device), generation_config=generation_config, streamer=streamer)
+            
             thread = Thread(target=model.generate, kwargs=generation_kwargs)
             thread.start()
 
@@ -226,17 +224,7 @@ def do_inference_gradio(
                 all_text += new_text
                 yield all_text
                 
-            #generated = model.generate(
-            #    inputs=batch["input_ids"].to(cfg.device),
-            #    generation_config=generation_config,
-            #    streamer=streamer
-            #)
-            #print("generated", generated)
-
-        #return "tada" + tokenizer.decode(generated["sequences"].cpu().tolist()[0])
-
     demo = gr.Interface(fn=greet, inputs="text", outputs="text")
-        
     demo.launch(show_api=False, share=True)   
 
 
