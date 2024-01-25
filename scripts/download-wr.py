@@ -6,7 +6,7 @@ ds = load_dataset("bigcode/the-stack-dedup", data_dir="data/mathematica", split=
 
 # write to file
 with open("/workspace/axolotl-mdel/mathematica.txt", "w") as f:
-    for example, n in tqdm(zip(ds, range(1000))):
+    for example, n in tqdm(zip(ds, range(100))):
         # completion raw corpus for axoltol
         jsonl = {"text": example["content"]}
         f.write(json.dumps(jsonl) + "\n")
