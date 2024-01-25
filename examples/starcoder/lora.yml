@@ -1,4 +1,4 @@
-base_model: bigcode/starcoder
+base_model: bigcode/starcoder # this can be swapped for mdel model when the model is released
 model_type: AutoModelForCausalLM
 tokenizer_type: AutoTokenizer
 is_llama_derived_model: false
@@ -8,8 +8,8 @@ load_in_4bit: false
 strict: false
 
 datasets:
-  - path: /workspace/axolotl-mdel/mathematica.txt
-    type: completion
+  - path: /workspace/axolotl-mdel/mathematica.txt # change this to where your dataset is
+    type: completion # change this to 'alpaca' if you are using alpaca
 
 lora_modules_to_save:
   - embed_tokens
@@ -19,7 +19,7 @@ dataset_prepared_path:
 val_set_size: 0.05
 output_dir: ./lora-out
 
-sequence_len: 4096
+sequence_len: 4096 # this can be tweaked for efficiency
 sample_packing: true
 pad_to_sequence_len: true
 
@@ -31,20 +31,20 @@ lora_dropout: 0.05
 lora_target_linear: true
 lora_fan_in_fan_out:
 
-wandb_project:
+wandb_project: mdel-experiement # give this a name
 wandb_entity:
 wandb_watch:
 wandb_name:
 wandb_log_model:
 
-gradient_accumulation_steps: 2
-micro_batch_size: 1
-num_epochs: 1
+gradient_accumulation_steps: 2 # this can be tweaked for efficiency
+micro_batch_size: 1 # this can be tweaked for efficiency
+num_epochs: 1 # this can be experimented with
 optimizer: adamw_bnb_8bit
 lr_scheduler: cosine
 learning_rate: 0.0002
 
-train_on_inputs: false
+train_on_inputs: true
 group_by_length: false
 bf16: true
 fp16: false
@@ -59,18 +59,18 @@ xformers_attention:
 flash_attention: true
 s2_attention:
 
-warmup_steps: 10
-evals_per_epoch: 4
+warmup_steps: 10 # this can be tweaked for efficiency
+evals_per_epoch: 4 # this can be tweaked for efficiency
 eval_table_size:
 eval_table_max_new_tokens: 128
-saves_per_epoch: 1
+saves_per_epoch: 1 
 debug:
 deepspeed:
 weight_decay: 0.0
 fsdp:
 fsdp_config:
 special_tokens:
-  pad_token: "[PAD]"
+  pad_token: "[PAD]" # I need to talk with Huu/Taishi about this
   bos_token: "<s>"
   eos_token: "</s>"
   unk_token: "<unk>"
