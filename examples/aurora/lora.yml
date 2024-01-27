@@ -1,4 +1,4 @@
-base_model: bigcode/starcoder # this can be swapped for mdel model when the model is released
+base_model: aurora-m/aurora-m-v0.1 # this can be swapped for mdel model when the model is released
 model_type: AutoModelForCausalLM
 tokenizer_type: AutoTokenizer
 is_llama_derived_model: false
