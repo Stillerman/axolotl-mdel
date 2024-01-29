@@ -11,6 +11,7 @@
 ## Create and Connect to RunPod Instance
 1. Spin up Axolotl Container
     -  Click [this link](https://runpod.io/gsc?template=v2ickqhz9s&ref=6i7fkpdz) and you will be taken to the runpod page where you will see “deploying with template axolotl-runpod”.
+        - This link will point at the latest docker build of Axolotl. At the time of writing that is [this](https://hub.docker.com/layers/winglian/axolotl-cloud/main-py3.10-cu118-2.1.2/images/sha256-3a410a44e749b7a00e3c4033d33189b0b27280ae38d53c950bfe8e85cd6368d6?context=explore)
     - Select Organization from top right drop down
     - Scroll down to previous generation GPU section and click deploy on 1xA100 80GB. Later you can adjust this to be up to 8 and it will speed up training.
     - Leave all settings alone and click continue -> deploy
