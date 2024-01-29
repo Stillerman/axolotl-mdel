@@ -1,7 +1,6 @@
 ## Prerequisites
 1. Create HuggingFace account
     - Accept T/C for [Aurora](https://huggingface.co/aurora-m/aurora-m-v0.1)
-    - Accept T/C for [The Stack](https://huggingface.co/datasets/bigcode/the-stack-dedup) (if you want to download the example data)
 
 2. Create [Weights and Biases](https://wandb.ai/) account
 
@@ -34,18 +33,19 @@ wandb login # you will need to go to https://wandb.ai/authorize and paste the ou
 
 2. Download/upload the data you want to train on to the RunPod machine
     - You can do this in multiple ways. If the data is on the cloud then they can use wget/curl to download it. If it is on their local computer they can use scp.
-    - If you want to use example data, you can download 1000 examples from the mathematica portion of the stack with `python scripts/download-wr.py` (you must first accept T/C. See Prereqs.)
-```bash
-# example with scp (you need the bottom url for this)
-scp -i ~/.ssh/id_ed25519 -P 40458 example.txt root@141.193.30.26:/workspace/axolotl-mdel
-```
+    - If you want to use example data, you can download the Magic The Gathering dataset with `python scripts/download-mtg.py` 
+    - You can transfer the local file with scp
+    ```bash
+    # example with scp (you need the bottom url for this)
+    scp -i ~/.ssh/id_ed25519 -P 40458 example.txt root@141.193.30.26:/workspace/axolotl-mdel
+    ```
 3. Make a configuration file for this experiment/iteration
-    - `cp examples/aurora/lora.yml examples/aurora/mathematica-100.yml`
-    - `vim examples/aurora/mathematica-100.yml`
+    - `cp examples/aurora/lora.yml examples/aurora/experiment1.yml`
+    - `vim examples/aurora/experiment1.yml`
     - Potentially edit lines with comments
 
 ## Train
-1. `accelerate launch -m axolotl.cli.train examples/aurora/mathematica-100.yml`
+1. `accelerate launch -m axolotl.cli.train examples/aurora/experiment1.yml`
     - This will pretokenize the dataset
     - Then it will download the weights (~5ish mins)
         - They are going to be cached in `/workspace/data/hf_home`
@@ -60,7 +60,7 @@ This will bring you to the WandB dashboard
 1. Launch Gradio inference server with
     
     ```bash
-    accelerate launch -m axolotl.cli.inference examples/aurora/mathematica-100.yml --lora_model_dir="./lora-out" --gradio
+    accelerate launch -m axolotl.cli.inference examples/aurora/experiment1.yml --lora_model_dir="./lora-out" --gradio
     ```
     
 2. This will show a link along the lines of `gradio.live` and click it and you can inference with it
