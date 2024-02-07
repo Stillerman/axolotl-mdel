@@ -79,9 +79,9 @@ HUGGING_FACE_HUB_TOKEN: <PLACEHOLDER>
 3. Post request
 
 ```
-curl https://g2np4tin5rbg52-80.proxy.runpod.net/generate \
+curl https://ikgih3vb97q78n-80.proxy.runpod.net/generate \
     -X POST \
-    -d '{"inputs":"Name:","parameters":{"max_new_tokens":1024, "do_sample":true, "repetition_penalty":1.1, "top_p":0.95, "top_k":40, "temperature": 0.9}}' \
+    -d '{"inputs":"Name:","parameters":{"max_new_tokens":1024, "do_sample":true, "repetition_penalty":1.1, "top_p":0.95, "top_k":40, "temperature": 0.9, "stop":["###"], "return_full_text": true}}' \
     -H 'Content-Type: application/json'
 
 ```
