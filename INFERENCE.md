@@ -2,20 +2,20 @@
 1. Create HuggingFace account
     - Accept T/C for [Aurora](https://huggingface.co/aurora-m/aurora-m-v0.1)
 
-## Create and Connect to RunPod Instance
-1. Spin up Text Generation Inference container
-    -  Click [this link](https://runpod.io/gsc?template=vrtapjy2bd&ref=jbhaolsm) and you will be taken to the runpod page where you will see “deploying with template TGI with Updated PEFT”.
-    - Select Organization from top right drop down
-    - **MAKE SURE YOU HAVE SELECTED CUDA 12.2 min version** ![cuda](./image/select_cuda.png)
-    - Scroll down to previous generation GPU section and click deploy on 1xA100 80GB. Smaller cheaper GPUs will also likely work.
-    - Click customize deployment
-        - Update `HUGGING_FACE_HUB_TOKEN` with your read hf token from hf.co/settings/tokens
-        - Update `Container Start Command` to point at your expert lora ex `--model-id stillerman/mtg-aurora`
-        - Click set overrides
-    - Click continue -> deploy
-    - Click the logs button on the created pod. When it is done settingup you will see `WARN text_generation_router: router/src/main.rs:327: Invalid hostname, defaulting to 0.0.0.0`
-    - Close the logs -> click connect -> Connect to HTTP Service [Port 80]
-    - This will open in a new tab. There will be nothing on the page but this is the base url for the api.
+## Spin up Text Generation Inference container
+-  Click [this link](https://runpod.io/gsc?template=vrtapjy2bd&ref=jbhaolsm) and you will be taken to the runpod page where you will see “deploying with template TGI with Updated PEFT”.
+- Select Organization from top right drop down
+- **MAKE SURE YOU HAVE SELECTED CUDA 12.2 min version** by clicking the settings icon and then change "allowed CUDA version" to 12.2 only.
+![cuda](./image/select_cuda.png)
+- Scroll down to previous generation GPU section and click deploy on 1xA100 80GB.
+- Click customize deployment
+    - Update `HUGGING_FACE_HUB_TOKEN` with your read hf token from hf.co/settings/tokens
+    - Update `Container Start Command` to point at your expert lora ex `--model-id stillerman/mtg-aurora`
+    - Click set overrides
+- Click continue -> deploy
+- Click the logs button on the created pod. When it is done settingup you will see `WARN text_generation_router: router/src/main.rs:327: Invalid hostname, defaulting to 0.0.0.0`
+- Close the logs -> click connect -> Connect to HTTP Service [Port 80]
+- This will open in a new tab. There will be nothing on the page but this is the base url for the api.
 
 ## Inference
 
